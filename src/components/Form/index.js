@@ -3,27 +3,20 @@ import React, { useState } from "react"
 import { Checkbox, Input, Radio } from "./Inputs"
 import { Select } from "./Select"
 
+import api from 'api'
+
+
 export const Form = () => {
   const [firstName, setFirstName] = useState("")
   const [firstNameError, setFirstNameError] = useState("")
-
   const [lastName, setLastName] = useState("")
   const [lastNameError, setLastNameError] = useState("")
-
   const [email, setEmail] = useState("")
   const [emailError, setEmailError] = useState("")
-
   const [gender, setGender] = useState("")
-  // const [gender, setGender] = useState("")
-
   const [destination, setDestination] = useState("India")
-  // const [destination, setDestination] = useState("India")
-
   const [isVegan, setIsVegan] = useState(false)
-  // const [isVegan, setIsVegan] = useState(false)
-
   const [isLactoseFree, setIsLactoseFree] = useState(false)
-  // const [isLactoseFree, setIsLactoseFree] = useState(false)
 
 
   const destinations = {
