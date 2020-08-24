@@ -5,12 +5,26 @@ import { Select } from "./Select"
 
 export const Form = () => {
   const [firstName, setFirstName] = useState("")
+  const [firstNameError, setFirstNameError] = useState("")
+
   const [lastName, setLastName] = useState("")
+  const [lastNameError, setLastNameError] = useState("")
+
   const [email, setEmail] = useState("")
+  const [emailError, setEmailError] = useState("")
+
   const [gender, setGender] = useState("")
+  // const [gender, setGender] = useState("")
+
   const [destination, setDestination] = useState("India")
+  // const [destination, setDestination] = useState("India")
+
   const [isVegan, setIsVegan] = useState(false)
+  // const [isVegan, setIsVegan] = useState(false)
+
   const [isLactoseFree, setIsLactoseFree] = useState(false)
+  // const [isLactoseFree, setIsLactoseFree] = useState(false)
+
 
   const destinations = {
     id: "destination",
@@ -51,29 +65,64 @@ export const Form = () => {
     {
       id: "fName",
       placeholder: "First Name",
+      error: firstNameError,
     },
     {
       id: "lName",
       placeholder: "Last Name",
+      error: lastNameError
     },
     {
       id: "email",
       placeholder: "Email",
-      type: "email"
+      type: "email",
+      error: emailError,
     },
   ]
+
+
+  const validator = {
+    validateEmails(val) {
+      const emailRe = new RegExp(/^[a-zA-Z]+$/g)
+      //Non-empty
+      return (val && emailRe.test(val)) || "Email must contain..."
+
+        },
+    validateNames(val) {
+      const lettersRe = new RegExp(/^[a-zA-Z]+$/g)
+      //Non-empty
+      return (val && lettersRe.test(val)) || "Name must be non empty and letters only"
+    },
+  }
+
 
   const handleChange = ({ target: { id, value, checked } }) => {
     switch (id) {
       case "fName":
-        setFirstName(value)
+        setFirstNameError("")
+      if (typeof validator.validateNames(value) === "string") {
+          setFirstNameError(validator.validateNames(value))
+      } else {
+        return
+      }
+      setFirstName(value)
         break
-      case "lName":
+
+        case "lName":
         setLastName(value)
         break
-      case "email":
+
+        case "email":
+        setEmailError("")
+        if (typeof validator.validateEmails(value) === "string") {
+            setEmailError(validator.validateEmails(value))
+        } else {
+          return
+        }
         setEmail(value)
         break
+
+
       case "destination":
         setDestination(value)
         break
@@ -92,12 +141,13 @@ export const Form = () => {
   return (
     <form className="center">
       <div className="grid mt-3">
-        {textInputs.map(({ id, placeholder }, i) => (
+        {textInputs.map(({ id, placeholder, error }, i) => (
           <Input
             handler={handleChange}
             id={id}
             key={i}
             placeholder={placeholder}
+            error={error}
           />
         ))}
         <Select selections={destinations} handler={handleChange} />
